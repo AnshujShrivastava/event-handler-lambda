@@ -1,0 +1,58 @@
+Conditions:
+    IsIntegrationTest:
+      Fn::Equals:
+        - ${self:provider.stage}
+        - 'integration-test'
+Resources:
+  ProductDeadLetterQueue:
+    Type: AWS::SQS::Queue
+    Condition: IsIntegrationTest
+  ProductQueue:
+    Type: AWS::SQS::Queue
+    Condition: IsIntegrationTest
+    Properties:
+      VisibilityTimeout: 5
+      RedrivePolicy:
+        deadLetterTargetArn: '#{ProductDeadLetterQueue.Arn}'
+        maxReceiveCount: 1
+  ProductTableSsmParameter:
+    Type: AWS::SSM::Parameter
+    Condition: IsIntegrationTest
+    Properties:
+      Name: /dynamodb/productsTable
+      Type: String
+      Value: Products-${self:provider.stage}
+  ProductQueueArnSsmParameter:
+    Type: AWS::SSM::Parameter
+    Condition: IsIntegrationTest
+    Properties:
+      Name: /common/sqs/product-customer-action/arn
+      Type: String
+      Value: '#{ProductQueue.Arn}'
+  ProductsTable:
+    Type: AWS::DynamoDB::Table
+    Condition: IsIntegrationTest
+    Properties:
+      TableName: Products-${self:provider.stage}
+      AttributeDefinitions:
+        - AttributeName: placeOfBusinessId
+          AttributeType: S
+        - AttributeName: productId
+          AttributeType: S
+      KeySchema:
+        - AttributeName: placeOfBusinessId
+          KeyType: HASH
+        - AttributeName: productId
+          KeyType: RANGE
+      ProvisionedThroughput:
+        ReadCapacityUnits: 1
+        WriteCapacityUnits: 1
+Outputs:
+  ProductQueue:
+    Condition: IsIntegrationTest
+    Value:
+      Ref: ProductQueue
+  ProductDeadLetterQueue:
+    Condition: IsIntegrationTest
+    Value:
+      Ref: ProductDeadLetterQueue

@@ -1,0 +1,14 @@
+# package directories
+node_modules
+jspm_packages
+.build
+.vscode
+
+# Serverless directories
+.serverless
+
+.DS_Store
+.idea
+
+# set up integration test overrides this file that's why it is ignored.
+__tests__/__helpers__/generated.integration-test.output.json

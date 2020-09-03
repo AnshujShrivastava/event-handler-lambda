@@ -1,0 +1,28 @@
+{
+  "compilerOptions": {
+    "lib": ["es2020"],
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "target": "es2020",
+    "rootDir": "./",
+    "outDir": ".build",
+    "tsBuildInfoFile": ".build/tsconfig.tsbuildinfo",
+    "alwaysStrict": false,
+    "esModuleInterop": true,
+    "incremental": true,
+    "noFallthroughCasesInSwitch": true,
+    "noEmitOnError": true,
+    "noImplicitAny": true,
+    "noImplicitReturns": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "preserveConstEnums": true,
+    "preserveWatchOutput": true,
+    "resolveJsonModule": true,
+    "skipLibCheck": true,
+    "sourceMap": true,
+    "strict": true,
+    "strictFunctionTypes": true,
+    "strictNullChecks": true
+  }
+}
